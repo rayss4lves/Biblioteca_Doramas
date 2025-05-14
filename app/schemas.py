@@ -1,5 +1,8 @@
 from pydantic import BaseModel, EmailStr
 
+class Message(BaseModel):
+    message:str
+
 class User(BaseModel):
     username: str
     password: str 
@@ -12,3 +15,6 @@ class UserP(BaseModel):
     id:int
     username: str
     email: EmailStr
+    
+class userList(BaseModel):
+    users: list[UserP]
