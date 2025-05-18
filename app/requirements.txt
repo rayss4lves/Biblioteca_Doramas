@@ -1,0 +1,23 @@
+fastapi==0.115.12
+uvicorn==0.34.2
+email_validator==2.2.0
+
+httpcore==1.0.9
+httpx==0.28.1
+pydantic==2.11.4
+pydantic_core==2.33.2
+
+#databse
+SQLAlchemy==2.0.41
+psycopg2==2.9.10
+
+#teste
+pytest==8.3.5
+
+#executar
+uvicorn app.main:app --reload
+#executar teste
+python -m pytest
+
+#desativar venv
+deactivate
