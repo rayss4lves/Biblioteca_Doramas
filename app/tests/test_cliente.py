@@ -1,28 +1,30 @@
-from conftest import client
-from main import app
-import pytest
+from fastapi.testclient import TestClient
+from app.main import app
 from http import HTTPStatus
 
-def test_read_root_deve_retornar_ok_e_ola(client):
-    response = client.get('/')
-    
-    assert response.json() == {'message':'ola mundo'}
-    
-def test_creat_user(client):
+client = TestClient(app)
+
+def test_read_fake_user():
+    response = client.get('/usuarios/fake')
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'username': 'Rayssa',
+        'password': '1234',
+        'email': 'rayssa@example.com'
+    }
+
+def test_create_user():
     response = client.post(
-        '/add', json={
-            'username':'teste',
-            'password':'password',
-            'email':'teste@test.com',
+        '/usuarios/add',
+        json={
+            'username': 'teste',
+            'password': 'password',
+            'email': 'teste@test.com',
         }
-                 
-                 )
-    assert response.status_code == HTTPStatus.CREATE
-    
-    assert response.json()=={
-            'username':'teste',
-            'password':'password',
-            'email':'teste@test.com',
-            'id':'1'
-            }
-    
+    )
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'id': 1,
+        'username': 'teste',
+        'email': 'teste@test.com'
+    }
