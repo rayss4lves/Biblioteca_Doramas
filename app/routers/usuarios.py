@@ -1,38 +1,50 @@
-from fastapi import APIRouter, HTTPException
-from app.schemas import User, UserDb, UserP, Message
+from fastapi import APIRouter, HTTPException, Depends
+from app.schemas import User, UserDB, UserP, Message
 from http import HTTPStatus
+from sqlmodel import Session, select
+from app.shared.database import get_session
 
 router = APIRouter(prefix='/usuarios', tags=['usuarios'])
 
-database = []
+
 
 @router.get('/fake', response_model=User)
 def read_fake_user():
     return User(username="Rayssa", password="1234", email="rayssa@example.com")
 
 @router.post('/add', response_model=UserP, status_code=HTTPStatus.OK)
-def add_user(user: User):
-    user_with_id = UserDb(id=len(database)+1, **user.model_dump())
-    database.append(user_with_id)
+def add_user(user: User, session: Session = Depends(get_session)):
+    user_with_id = UserDB(**user.model_dump())
+    session.add(user_with_id)
+    session.commit()
+    session.refresh(user_with_id)
     return UserP(id=user_with_id.id, username=user_with_id.username, email=user_with_id.email)
 
 @router.put('/add/{user_id}', response_model=UserP)
-def update_user(user_id: int, user: User):
-    if user_id < 1 or user_id > len(database):
+def update_user(user_id: int, user: User, session: Session = Depends(get_session)):
+    db_user = session.get(UserDB, user_id)
+    if not db_user:
         raise HTTPException(status_code=404, detail='User not found')
+    db_user.username = user.username
+    db_user.password = user.password
+    db_user.email = user.email
     
-    user_with_id = UserDb(id=user_id, **user.model_dump())
-    database[user_id - 1] = user_with_id
-    return user_with_id
+    session.commit
+    session.refresh(db_user)
+    return UserP(id=db_user.id, username=db_user.username, email=db_user.email)
 
 @router.delete('/add/{user_id}', response_model=Message)
-def delete_user(user_id: int):
-    if user_id < 1 or user_id > len(database):
+def delete_user(user_id: int, session: Session = Depends(get_session)):
+    db_user = session.get(UserDB, user_id)
+    if not db_user:
         raise HTTPException(status_code=404, detail='User not found')
-    
-    del database[user_id - 1]
-    return {'message': 'User deleted'}
+    session.delete(db_user)
+    session.commit()
+    return Message(message='User deleted successfully')
 
-@router.get('/all', response_model=list[UserDb])
-def get_all_users():
-    return database
+@router.get('/all', response_model=list[UserDB])
+def get_all_users(session: Session = Depends(get_session)):
+    user = session.exec(select(UserDB)).all()
+    if not user:
+        raise HTTPException(status_code=404, detail='No users found')
+    return user

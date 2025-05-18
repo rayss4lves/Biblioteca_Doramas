@@ -1,12 +1,13 @@
-#crie o docker-compose.yaml postgresql
-version: '3.8'
 services:
   db:
-    image: postgres:13
-    container_name: postgres_db
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: postgres
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: senha
+      POSTGRES_DB: biblioteca
     ports:
-      - "5432:5432"
+      - "5432:5432"   # <-- expõe o banco na porta local 5432
+volumes:
+  pgdata:

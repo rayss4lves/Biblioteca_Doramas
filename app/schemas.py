@@ -1,20 +1,24 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr
+from sqlmodel import SQLModel, Field
+from typing import Optional
 
-class Message(BaseModel):
+class Message(SQLModel):
     message:str
 
-class User(BaseModel):
+class User(SQLModel):
     username: str
     password: str 
     email: EmailStr
-
-class UserDb(User):
-    id:int
     
-class UserP(BaseModel):
+class UserP(SQLModel):
     id:int
     username: str
     email: EmailStr
-    
-class userList(BaseModel):
-    users: list[UserP]
+
+#modelo banco de dados   
+class UserDB(SQLModel, table=True):
+    __tablename__ = 'users'
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str
+    password: str 
+    email: EmailStr
