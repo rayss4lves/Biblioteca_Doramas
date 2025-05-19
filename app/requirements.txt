@@ -15,6 +15,7 @@ psycopg2==2.9.10
 pytest==8.3.5
 
 #executar
+docker-compose up -d
 uvicorn app.main:app --reload
 #executar teste
 python -m pytest
