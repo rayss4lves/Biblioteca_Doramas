@@ -18,20 +18,25 @@ def add_user(user: User, session: Session = Depends(get_session)):
     session.add(user_with_id)
     session.commit()
     session.refresh(user_with_id)
-    return UserP(id=user_with_id.id, username=user_with_id.username, email=user_with_id.email)
+    return user_with_id
 
 @router.put('/add/{user_id}', response_model=UserP)
 def update_user(user_id: int, user: User, session: Session = Depends(get_session)):
     db_user = session.get(UserDB, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail='User not found')
-    db_user.username = user.username
-    db_user.password = user.password
-    db_user.email = user.email
+    
+    for attr, value in user.model_dump().items():
+        if value is not None:
+            setattr(db_user, attr, value)
+            
+    # db_user.username = user.username
+    # db_user.password = user.password
+    # db_user.email = user.email
     
     session.commit
     session.refresh(db_user)
-    return UserP(id=db_user.id, username=db_user.username, email=db_user.email)
+    return db_user
 
 @router.delete('/add/{user_id}', response_model=Message)
 def delete_user(user_id: int, session: Session = Depends(get_session)):
@@ -42,7 +47,7 @@ def delete_user(user_id: int, session: Session = Depends(get_session)):
     session.commit()
     return Message(message='User deleted successfully')
 
-@router.get('/all', response_model=list[UserDB])
+@router.get('/all', response_model=list[UserP])
 def get_all_users(session: Session = Depends(get_session)):
     user = session.exec(select(UserDB)).all()
     if not user:
