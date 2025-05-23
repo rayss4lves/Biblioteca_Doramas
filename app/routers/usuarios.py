@@ -26,15 +26,15 @@ def update_user(user_id: int, user: User, session: Session = Depends(get_session
     if not db_user:
         raise HTTPException(status_code=404, detail='User not found')
     
-    for attr, value in user.model_dump().items():
-        if value is not None:
-            setattr(db_user, attr, value)
+    # for attr, value in user.model_dump().items():
+    #     if value is not None:
+    #         setattr(db_user, attr, value)
             
-    # db_user.username = user.username
-    # db_user.password = user.password
-    # db_user.email = user.email
+    db_user.username = user.username
+    db_user.password = user.password
+    db_user.email = user.email
     
-    session.commit
+    session.commit()
     session.refresh(db_user)
     return db_user
 
