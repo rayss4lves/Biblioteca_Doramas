@@ -1,21 +1,36 @@
 package model;
 
+import model.enuns.*;
+
 import java.time.LocalDate;
 import java.util.List;
-class Dorama {
+public class Dorama {
     private String titulo;
     private String sinopse;
-    private List<String> genero;
-    private boolean status;
+    private List<Generos> genero;
     private String emissora;
+    private String paisOrigem;
     private LocalDate dataPublicacao;
     private String avaliacaoIMDB;
     private List<Ator> principaisAtores;
     private Diretor diretor;
-    private boolean assistido;
-    private boolean favorito;
-    private boolean assistindoAtualmente;
-    private boolean queroAssistir;
+    private List<StatusDorama> statusDorama;
+
+    public Dorama(String titulo, String sinopse, List<Generos> genero, String emissora, String paisOrigem,
+        LocalDate dataPublicacao, String avaliacaoIMDB, List<Ator> principaisAtores,
+        Diretor diretor, List<StatusDorama> statusDorama){
+        this.titulo = titulo;
+        this.sinopse = sinopse;
+        this.genero = genero;
+        this.emissora = emissora;
+        this.paisOrigem = paisOrigem;
+        this.dataPublicacao = dataPublicacao;
+        this.avaliacaoIMDB = avaliacaoIMDB;
+        this.principaisAtores = principaisAtores;
+        this.diretor = diretor;
+        this.statusDorama = statusDorama;
+
+    }
 
     // Getters
     public String getTitulo() {
@@ -26,12 +41,8 @@ class Dorama {
         return sinopse;
     }
 
-    public List<String> getGenero() {
+    public List<Generos> getGenero() {
         return genero;
-    }
-
-    public boolean isStatus() {
-        return status;
     }
 
     public String getEmissora() {
@@ -54,20 +65,8 @@ class Dorama {
         return diretor;
     }
 
-    public boolean isAssistido() {
-        return assistido;
-    }
-
-    public boolean isFavorito() {
-        return favorito;
-    }
-
-    public boolean isAssistindoAtualmente() {
-        return assistindoAtualmente;
-    }
-
-    public boolean isQueroAssistir() {
-        return queroAssistir;
+    public List<StatusDorama> getStatusDorama() {
+        return statusDorama;
     }
 
     // Setters
@@ -79,12 +78,8 @@ class Dorama {
         this.sinopse = sinopse;
     }
 
-    public void setGenero(List<String> genero) {
+    public void setGenero(List<Generos> genero) {
         this.genero = genero;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public void setEmissora(String emissora) {
@@ -107,21 +102,16 @@ class Dorama {
         this.diretor = diretor;
     }
 
-    public void setAssistido(boolean assistido) {
-        this.assistido = assistido;
+    public void setStatusDorama(List<StatusDorama> statusDorama) {
+        this.statusDorama = statusDorama;
     }
 
-    public void setFavorito(boolean favorito) {
-        this.favorito = favorito;
+    public void setPaisOrigem(String paisOrigem) {
+        this.paisOrigem = paisOrigem;
     }
 
-    public void setAssistindoAtualmente(boolean assistindoAtualmente) {
-        this.assistindoAtualmente = assistindoAtualmente;
+    public String getPaisOrigem() {
+        return paisOrigem;
     }
-
-    public void setQueroAssistir(boolean queroAssistir) {
-        this.queroAssistir = queroAssistir;
-    }
-
 
 }

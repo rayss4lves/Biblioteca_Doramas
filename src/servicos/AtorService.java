@@ -1,7 +1,6 @@
 package servicos;
 
 import model.Ator;
-import model.Ator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -13,30 +12,34 @@ public class AtorService {
     List<Ator> actors = new ArrayList<>();
     List<String> premios = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    public void criarAtor(){
-        System.out.println("Informe o seu nome: ");
-        String nome= sc.nextLine();
 
-        System.out.println("Insira a sua nascionalidade: ");
-        String nascionalidade = sc.nextLine();
+    public Ator criarAtor() {
+        System.out.println("Informe o nome do ator: ");
+        String nome = sc.nextLine();
 
-        System.out.println("Insira a data do seu nascimento: ");
+        System.out.println("Insira a nacionalidade: ");
+        String nacionalidade = sc.nextLine();
+
+        System.out.println("Insira a data de nascimento (AAAA-MM-DD): ");
         String dataNascStr = sc.nextLine();
         LocalDate dataNasc = LocalDate.parse(dataNascStr);
 
-        int i = 1;
-        System.out.println("Informe a quantidade de premios: ");
+        System.out.println("Informe a quantidade de prêmios: ");
         int qtd = sc.nextInt();
-        while(i <= qtd) {
-            System.out.println("Informe o nome do premio: ");
+        sc.nextLine();
+
+        List<String> premios = new ArrayList<>();
+        for (int i = 1; i <= qtd; i++) {
+            System.out.println("Informe o nome do prêmio #" + i + ": ");
             String premio = sc.nextLine().trim();
             premios.add(premio);
-            i++;
         }
 
-        Ator ator = new Ator(nome, nascionalidade, dataNasc, premios);
-        actors.add(ator);
+        Ator ator = new Ator(nome, nacionalidade, dataNasc, premios);
+        this.actors.add(ator);
+        return ator;
     }
+
 
     public int excluirAtor(){
         int excluiu = 0;
@@ -109,13 +112,13 @@ public class AtorService {
     }
 
     public Ator buscarAtor(String nome){
-        Ator actorExcluir = null;
+        Ator atorEncontrado = null;
         for (Ator us:this.actors){
             if (nome.equals(us.getNome())){
-                actorExcluir = us;
+                atorEncontrado = us;
             }
         }
-        return actorExcluir;
+        return atorEncontrado;
     }
 
 }

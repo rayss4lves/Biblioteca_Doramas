@@ -13,7 +13,7 @@ public class DiretorService {
     List<Diretor> diretores = new ArrayList<>();
     List<String> premios = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    public void criarDiretor(){
+    public Diretor criarDiretor(){
         System.out.println("Informe o seu nome: ");
         String nome= sc.nextLine();
 
@@ -35,7 +35,8 @@ public class DiretorService {
         }
 
         Diretor diretor = new Diretor(nome, nascionalidade, dataNasc, premios);
-        diretores.add(diretor);
+        this.diretores.add(diretor);
+        return diretor;
     }
 
     public int excluirDiretor(){

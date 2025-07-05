@@ -42,7 +42,7 @@ public class UsuarioService {
             System.out.println("Informe a sua senha: ");
             senha = sc.nextLine();
         }else{
-           email = "visitante@gmail.com";
+           email = null;
            senha = null;
         }
 
@@ -147,5 +147,24 @@ public class UsuarioService {
         }
         return userExcluir;
     }
+
+    public Usuario login() {
+        System.out.println("Informe o email:");
+        String email = sc.nextLine();
+
+        System.out.println("Informe a senha:");
+        String senha = sc.nextLine();
+
+        for (Usuario user : users) {
+            if (user.autenticar(email, senha)) {
+                System.out.println("Login realizado com sucesso! Bem-vindo, " + user.getNome());
+                return user;
+            }
+        }
+
+        System.out.println("Email ou senha incorretos.");
+        return null;
+    }
+
 
 }
