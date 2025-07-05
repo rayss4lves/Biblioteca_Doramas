@@ -1,4 +1,31 @@
 package model.enuns;
 
 public enum Generos {
+    ROMANCE,
+    COMEDIA,
+    COMEDIA_ROMANTICA,
+    DRAMA,
+    AVENTURA,
+    ACAO,
+    SUSPENSE,
+    MISTERIO,
+    TERROR,
+    FANTASIA,
+    FICCAO_CIENTIFICA,
+    HISTORICO,         // Também chamado de "Sageuk" nos K-dramas
+    ESCOLAR,
+    JURIDICO,
+    MEDICO,
+    POLICIAL,
+    INVESTIGACAO,
+    CRIME,
+    FAMILIA,
+    ESPORTIVO,
+    SOBRENATURAL,
+    PSICOLOGICO,
+    POLITICO,
+    MILITAR,
+    VIAGEM_NO_TEMPO,
+    VIDA_COTIDIANA,
+    WEBDRAMA,
 }

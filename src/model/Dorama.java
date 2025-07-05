@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.List;
- class Dorama {
+class Dorama {
     private String titulo;
     private String sinopse;
     private List<String> genero;

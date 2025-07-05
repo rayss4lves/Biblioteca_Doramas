@@ -7,6 +7,12 @@ public class Pessoa {
     private String nacionalidade;
     private LocalDate dataNascimento;
 
+    public Pessoa(String nome, String nacionalidade, LocalDate dataNascimento) {
+        this.nome = nome;
+        this.nacionalidade = nacionalidade;
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getNacionalidade() {
         return nacionalidade;
     }
