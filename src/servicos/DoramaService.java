@@ -28,7 +28,7 @@ public class DoramaService {
 
     //SERIES
 
-    public void criarSerieDorama() {
+    public Dorama criarSerieDorama() {
         System.out.println("Insira o titulo da série dorama: ");
         String titulo = sc.nextLine();
 
@@ -42,7 +42,7 @@ public class DoramaService {
         List<Generos> generos = new ArrayList<>();
 
         for (int i = 0; i < Generos.values().length; i++) {
-            System.out.println(i + " - " + Generos.values()[i]);
+            System.out.println(" - " + Generos.values()[i]);
         }
         String resposta;
         do {
@@ -81,16 +81,19 @@ public class DoramaService {
             System.out.println("Insira o nome do ator: ");
             String nomeAtor = sc.nextLine();
             Ator ator = atorService.buscarAtor(nomeAtor);
+            if (ator == null)
+                ator = atorService.criarAtor();
             principaisAtores.add(ator);
 
             System.out.println("Deseja adicionar outro ator principal? (s/n)");
             respostaAtores = sc.nextLine();
         }
 
-
         System.out.println("Insira o nome do diretor: ");
         String nomeDiretor = sc.nextLine();
         Diretor diretor = diretorService.buscarDiretor(nomeDiretor);
+        if (diretor == null)
+            diretor = diretorService.criarDiretor();
 
         StatusDorama statusDorama;
         for (int i = 0; i < StatusDorama.values().length; i++) {
@@ -108,7 +111,7 @@ public class DoramaService {
                 statusDorama = StatusDorama.valueOf(statusStr.toUpperCase());
             } catch (IllegalArgumentException e) {
                 System.out.println("Tipo inválido.");
-                return;
+                return null;
             }
             status.add(statusDorama);
 
@@ -121,6 +124,7 @@ public class DoramaService {
                 LocalDate.parse(dataPublicacaoStr), avaliacaoIMDB, principaisAtores, diretor, status,
                 qtdTemporadas, qtdEpisodios);
         seriesDoramas.add(serieDorama);
+        return serieDorama;
     }
 
     public void editarSeries(){
@@ -252,14 +256,14 @@ public class DoramaService {
 
     //FILMES
 
-    public void criarFilmeDorama() {
-        System.out.println("Insira o titulo da série dorama: ");
+    public Dorama criarFilmeDorama() {
+        System.out.println("Insira o titulo do filme dorama: ");
         String titulo = sc.nextLine();
 
-        System.out.println("Insira a sinopse da série dorama: ");
+        System.out.println("Insira a sinopse do filme dorama: ");
         String sinopse = sc.nextLine();
 
-        System.out.println("Insira o genero da série dorama: ");
+        System.out.println("Insira o genero do filme dorama: ");
         String genero = sc.nextLine();
 
         System.out.println("Escolha um gênero:");
@@ -279,22 +283,21 @@ public class DoramaService {
 
         }while(resposta.equals("s"));
 
-        System.out.println("Insira a emissora da série dorama: ");
+        System.out.println("Insira a emissora do filme dorama: ");
         String emissora = sc.nextLine();
 
-        System.out.println("Insira o pais de origem da série dorama: ");
+        System.out.println("Insira o pais de origem do filme dorama: ");
         String paisOrigem = sc.nextLine();
 
-        System.out.println("Insira a data de publicação da série dorama (AAAA-MM-DD): ");
+        System.out.println("Insira a data de publicação do filme dorama (AAAA-MM-DD): ");
         String dataPublicacaoStr = sc.nextLine();
 
-        System.out.println("Insira a avaliação IMDB da série dorama: ");
+        System.out.println("Insira a avaliação IMDB do filme dorama: ");
         String avaliacaoIMDB = sc.nextLine();
 
-        System.out.println("Insira a duracao do filme dorama: ");
+        System.out.println("Insira a duracao do filme dorama (em segundos): ");
         int duracao = sc.nextInt();
         sc.nextLine();
-
 
         List<Ator> principaisAtores = new ArrayList<>();
         System.out.println("Deseja adicionar atores principais? (s/n)");
@@ -321,21 +324,21 @@ public class DoramaService {
 
         StatusDorama statusDorama;
         for (int i = 0; i < StatusDorama.values().length; i++) {
-            System.out.println(i + " - " + StatusDorama.values()[i]);
+            System.out.println(" - " + StatusDorama.values()[i]);
         }
 
         List<StatusDorama> status = new ArrayList<>();
-        System.out.println("Deseja adicionar o status da série dorama? (s/n)");
+        System.out.println("Deseja adicionar o status do filme dorama? (s/n)");
         String respostaStatus = sc.nextLine().toLowerCase();
         while (respostaStatus.toLowerCase().equals("s")){
-            System.out.println("Insira o status da série dorama: ");
+            System.out.println("Insira o status do filme dorama: ");
             String statusStr = sc.nextLine().trim();
 
             try {
                 statusDorama = StatusDorama.valueOf(statusStr.toUpperCase());
             } catch (IllegalArgumentException e) {
                 System.out.println("Tipo inválido.");
-                return;
+                return null;
             }
             status.add(statusDorama);
 
@@ -347,6 +350,7 @@ public class DoramaService {
         FilmeDorama filmeDorama = new FilmeDorama(titulo, sinopse, generos, emissora, paisOrigem,
                 LocalDate.parse(dataPublicacaoStr), avaliacaoIMDB, principaisAtores, diretor, status, duracao);
         filmeDoramas.add(filmeDorama);
+        return filmeDorama;
     }
 
     public void editarFilmes(){

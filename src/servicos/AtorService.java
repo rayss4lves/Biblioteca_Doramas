@@ -36,14 +36,18 @@ public class AtorService {
         }
 
         Ator ator = new Ator(nome, nacionalidade, dataNasc, premios);
+        if (ator != null) {
+            System.out.println("Ator criado com sucesso!");
+        } else {
+            System.out.println("Erro ao criar o ator.");
+        }
         this.actors.add(ator);
         return ator;
     }
 
-
     public int excluirAtor(){
         int excluiu = 0;
-        System.out.println("Informe o seu nome: ");
+        System.out.println("Informe o nome do ator: ");
         String nome= sc.nextLine();
         Ator ator = buscarAtor(nome);
         if (ator != null){
@@ -56,7 +60,7 @@ public class AtorService {
 
     public int editarAtor(){
         int editou = 0;
-        System.out.println("Informe o seu nome: ");
+        System.out.println("Informe o nome do ator: ");
         String nome= sc.nextLine();
         Ator ator = buscarAtor(nome);
         if (ator != null) {

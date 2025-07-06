@@ -46,7 +46,7 @@ public class Usuario extends Pessoa implements Autentica {
         System.out.println("Nome: "+this.getNome());
         System.out.println("Data de nascimento: "+this.getDataNascimento());
         System.out.println("Nacionalidade: "+this.getNacionalidade());
-        System.out.println("Data de nascimento: "+this.getTipoUsuario());
+        System.out.println("Tipo de usuario: "+this.getTipoUsuario());
 
     }
 

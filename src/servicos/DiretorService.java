@@ -14,7 +14,7 @@ public class DiretorService {
     List<String> premios = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
     public Diretor criarDiretor(){
-        System.out.println("Informe o seu nome: ");
+        System.out.println("Informe o nome do diretor: ");
         String nome= sc.nextLine();
 
         System.out.println("Insira a sua nascionalidade: ");
@@ -27,6 +27,7 @@ public class DiretorService {
         int i = 1;
         System.out.println("Informe a quantidade de premios: ");
         int qtd = sc.nextInt();
+        sc.nextLine();
         while(i <= qtd) {
             System.out.println("Informe o nome do premio: ");
             String premio = sc.nextLine().trim();
@@ -35,13 +36,19 @@ public class DiretorService {
         }
 
         Diretor diretor = new Diretor(nome, nascionalidade, dataNasc, premios);
+
+        if (diretor!=null) {
+            System.out.println("Diretor criado com sucesso!");
+        } else {
+            System.out.println("Erro ao criar o diretor.");
+        }
         this.diretores.add(diretor);
         return diretor;
     }
 
     public int excluirDiretor(){
         int excluiu = 0;
-        System.out.println("Informe o seu nome: ");
+        System.out.println("Informe o nome do diretor: ");
         String nome= sc.nextLine();
         Diretor diretor = buscarDiretor(nome);
         if (diretor != null){
@@ -54,7 +61,7 @@ public class DiretorService {
 
     public int editarDiretor(){
         int editou = 0;
-        System.out.println("Informe o seu nome: ");
+        System.out.println("Informe o nome do diretor: ");
         String nome= sc.nextLine();
         Diretor diretor = buscarDiretor(nome);
         if (diretor != null) {

@@ -12,7 +12,8 @@ public class UsuarioService {
     List<Usuario> users = new ArrayList<>();
 
     Scanner sc = new Scanner(System.in);
-    public void criarPessoa(){
+
+    public Usuario criarPessoa(){
         String email, senha;
         System.out.println("Informe o seu nome: ");
         String nome= sc.nextLine();
@@ -32,7 +33,7 @@ public class UsuarioService {
             tipo = TipoUsuario.valueOf(tipostr);
         } catch (IllegalArgumentException e) {
             System.out.println("Tipo inválido. Digite ADMIN ou USUARIO.");
-            return;
+            return null;
         }
 
         if (tipo == TipoUsuario.ADMIN){
@@ -48,6 +49,7 @@ public class UsuarioService {
 
         Usuario user = new Usuario(nome, nascionalidade, dataNasc, email, senha, tipo);
         users.add(user);
+        return user;
     }
 
     public int excluirUser(){
@@ -157,12 +159,15 @@ public class UsuarioService {
 
         for (Usuario user : users) {
             if (user.autenticar(email, senha)) {
-                System.out.println("Login realizado com sucesso! Bem-vindo, " + user.getNome());
+                System.out.println("Login realizado com sucesso!");
+                System.out.println("---------------------------------");
                 return user;
+
             }
         }
 
         System.out.println("Email ou senha incorretos.");
+        System.out.println("---------------------------------");
         return null;
     }
 

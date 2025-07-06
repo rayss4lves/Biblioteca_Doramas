@@ -19,7 +19,7 @@ public class FilmeDorama extends Dorama{
     }
 
     public int getDuracao() {
-        return duracao;
+        return duracao/60;
     }
     public void setDuracao(int duracao) {
         if (duracao < 0) {
