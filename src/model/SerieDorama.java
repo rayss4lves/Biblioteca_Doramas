@@ -7,32 +7,32 @@ import java.util.List;
 
 public class SerieDorama extends Dorama{
 
-    private String qtdTemporadas;
-    private String qtdEpisodios;
+    private int qtdTemporadas;
+    private int qtdEpisodios;
 
     public SerieDorama(String titulo, String sinopse, List<Generos> genero, String emissora, String paisOrigem,
                        LocalDate dataPublicacao, String avaliacaoIMDB, List<Ator> principaisAtores, Diretor diretor,
                        List<StatusDorama> status,
-                       String qtdTemporadas, String qtdEpisodios) {
+                       int qtdTemporadas, int qtdEpisodios) {
         super(titulo, sinopse, genero, emissora, paisOrigem, dataPublicacao, avaliacaoIMDB,
                 principaisAtores, diretor, status);
         this.qtdTemporadas = qtdTemporadas;
         this.qtdEpisodios = qtdEpisodios;
     }
 
-    public String getQtdTemporadas() {
+    public int getQtdTemporadas() {
         return qtdTemporadas;
     }
 
-    public void setQtdTemporadas(String qtdTemporadas) {
+    public void setQtdTemporadas(int qtdTemporadas) {
         this.qtdTemporadas = qtdTemporadas;
     }
 
-    public String getQtdEpisodios() {
+    public int getQtdEpisodios() {
         return qtdEpisodios;
     }
 
-    public void setQtdEpisodios(String qtdEpisodios) {
+    public void setQtdEpisodios(int qtdEpisodios) {
         this.qtdEpisodios = qtdEpisodios;
     }
 

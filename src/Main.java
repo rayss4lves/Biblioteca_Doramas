@@ -1,16 +1,15 @@
-import model.Pessoa;
+import model.*;
 import model.enuns.Generos;
+import model.enuns.StatusAndamento;
 import model.enuns.StatusDorama;
 import model.enuns.TipoUsuario;
 import servicos.DoramaService;
 import servicos.UsuarioService;
 import servicos.AtorService;
 import servicos.DiretorService;
-//import servicos.DoramaService;
-import model.Usuario;
-import model.Dorama;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -22,13 +21,13 @@ public class Main {
         DiretorService diretorService = new DiretorService();
         DoramaService doramaService = new DoramaService();
 
-        System.out.println("==================================");
+        System.out.println("=====================================");
         System.out.println("🎬 BEM-VINDO À BIBLIOTECA DE DORAMAS 🎬");
-        System.out.println("==================================");
+        System.out.println("=====================================");
         int opcao = -1;
         while (opcao != 0) {
             System.out.println("================================");
-            System.out.println("\n🎥 BIBLIOTECA DE DORAMAS");
+            System.out.println("\n📚 MENU PRINCIPAL");
             System.out.println("1 - Cadastrar Usuário");
             System.out.println("2 - Realizar Login");
             System.out.println("0 - Sair");
@@ -93,6 +92,7 @@ public class Main {
 
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida.");
+                break;
             }
         }
         sc.close();
@@ -118,11 +118,13 @@ public class Main {
                         System.out.println("---------------------------------");
                         menuPessoas(sc, usuarioService, atorService, diretorService);
                         System.out.println("---------------------------------");
+                        break;
                     }
                     case 2:{
                         System.out.println("---------------------------------");
-                        menuDoramasAdmin(sc, doramaService);
+                        menuDoramasAdmin(usuarioService, sc, doramaService);
                         System.out.println("---------------------------------");
+                        break;
                     }
                     case 0:{
                         System.out.println("---------------------------------");
@@ -138,6 +140,7 @@ public class Main {
 
             } catch (NumberFormatException e) {
                 System.out.println("Entrada inválida.");
+                break;
             }
         }
     }
@@ -161,30 +164,36 @@ public class Main {
                         System.out.println("---------------------------------");
                         menuUsuarios(usuarioService, sc);
                         System.out.println("---------------------------------");
+                        break;
                     }
                     case 2:{
                         System.out.println("---------------------------------");
                         menuAtores(atorService, sc);
                         System.out.println("---------------------------------");
+                        break;
                     }
                     case 3:{
                         System.out.println("---------------------------------");
                         menuDiretores(diretorService, sc);
                         System.out.println("---------------------------------");
+                        break;
                     }
                     case 0:{
                         System.out.println("---------------------------------");
                         System.out.println("Voltando ao menu principal...");
                         System.out.println("---------------------------------");
+                        break;
                     }
                     default:{
                         System.out.println("---------------------------------");
                         System.out.println("Opção inválida. Tente novamente.");
                         System.out.println("---------------------------------");
+                        break;
                     }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
@@ -257,6 +266,7 @@ public class Main {
                 }
                 default:{
                     System.out.println("Opção inválida.");
+                    break;
                 }
             }
         }
@@ -265,7 +275,6 @@ public class Main {
     // Submenu: ATORES
     public static void menuAtores(AtorService atorService, Scanner sc) {
         int opcao;
-
 
         do {
             System.out.println("=================================");
@@ -401,13 +410,181 @@ public class Main {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
 
     // Submenu: DORAMAS
 
-    public static void menuDoramasAdmin(Scanner sc, DoramaService doramaService) {
+    public static void menuProgresso(UsuarioService usuarioService, DoramaService doramaService, Scanner sc) {
+
+        int opcao = -1;
+
+        while (opcao != 0){
+            System.out.println("=================================");
+            System.out.println("\nMENU PROGRESSO DORAMAS");
+            System.out.println("1 - Iniciar Progressos dos doramas");
+            System.out.println("2 - Visualizar Progresso dos usuários");
+            System.out.println("3 - Atualizar Progresso dos usuários");
+            System.out.println("0 - Voltar");
+            System.out.println("=================================");
+            System.out.print("Escolha: ");
+            try {
+                opcao = Integer.parseInt(sc.nextLine());
+
+                switch (opcao) {
+                    case 1: {
+                        System.out.println("---------------------------------");
+                        System.out.println("📊 Visualizando progressos dos usuários");
+
+                        usuarioService.getUsers();
+                        System.out.println("Digite o nome do usuário:");
+                        String nomeUsuario = sc.nextLine();
+                        Usuario usuario = usuarioService.buscarUser(nomeUsuario);
+
+
+                        if (usuario == null) {
+                            System.out.println("Usuário não encontrado.");
+                            System.out.println("---------------------------------");
+                            break;
+                        }
+
+                        System.out.println("Selecione o tipo de dorama:");
+                        System.out.println("1 - Série");
+                        System.out.println("2 - Filme");
+                        int tipoDorama = Integer.parseInt(sc.nextLine());
+
+
+                        if (tipoDorama == 1) {
+                            doramaService.listarSeries();
+
+                            System.out.println("Digite o título do dorama:");
+                            String tituloDorama = sc.nextLine();
+
+                            SerieDorama dorama = doramaService.buscarSerie(tituloDorama);
+                            usuario.inicializarProgressoSerie(dorama, dorama.getQtdEpisodios(), 0, StatusAndamento.EM_ANDAMENTO);
+                        } else if (tipoDorama == 2) {
+                            doramaService.listarFilmes();
+
+                            System.out.println("Digite o título do dorama:");
+                            String tituloDorama = sc.nextLine();
+                            FilmeDorama dorama = doramaService.buscarFilme(tituloDorama);
+                            usuario.inicializarProgressoFilme(dorama, dorama.getDuracao(), 0, StatusAndamento.EM_ANDAMENTO);
+                        } else {
+                            System.out.println("Tipo de dorama inválido.");
+                            System.out.println("---------------------------------");
+                            break;
+                        }
+
+                        System.out.println("Progresso iniciado.");
+                        System.out.println("---------------------------------");
+                        break;
+                    }
+                    case 2:
+                    {
+                            System.out.println("---------------------------------");
+                            System.out.println("📊 Visualizando progresso dos usuários");
+
+                            usuarioService.getUsers();
+                            System.out.println("Digite o nome do usuário:");
+                            String nomeUsuario = sc.nextLine();
+                            Usuario usuario = usuarioService.buscarUser(nomeUsuario);
+
+                            if (usuario == null) {
+                                System.out.println("Usuário não encontrado.");
+                                break;
+                            }
+
+                            System.out.println("Serie ou Filme?");
+                            String tipo = sc.nextLine().trim().toLowerCase();
+
+                            if (tipo.equals("serie")) {
+                                doramaService.listarSeries();
+                                System.out.println("Digite o título do dorama:");
+                                String tituloDorama = sc.nextLine();
+                                SerieDorama dorama = doramaService.buscarSerie(tituloDorama);
+                                verProgressoAtual(usuario, dorama);
+                            } else {
+                                doramaService.listarFilmes();
+                                System.out.println("Digite o título do dorama:");
+                                String tituloDorama = sc.nextLine();
+                                FilmeDorama dorama = doramaService.buscarFilme(tituloDorama);
+                                verProgressoAtual(usuario, dorama);
+                            }
+
+                            System.out.println("---------------------------------");
+                            break;
+
+                    }
+                    case 3:{
+                            System.out.println("---------------------------------");
+                            System.out.println("Atualizando o progresso dos usuários");
+                            usuarioService.getUsers();
+
+                            System.out.println("Digite o nome do usuário:");
+                            String nomeUsuario = sc.nextLine();
+                            Usuario usuario = usuarioService.buscarUser(nomeUsuario);
+
+                            if (usuario == null) {
+                                System.out.println("Usuário não encontrado.");
+                                break;
+                            }
+
+                            System.out.println("Serie ou Filme?");
+                            String tipo = sc.nextLine().trim().toLowerCase();
+
+                            if (tipo.equals("serie")) {
+                                doramaService.listarSeries();
+                                System.out.println("Digite o título do dorama:");
+                                String tituloDorama = sc.nextLine();
+                                SerieDorama dorama = doramaService.buscarSerie(tituloDorama);
+                                atualizarProgressoSerie(usuario, dorama, sc);
+                            } else {
+                                doramaService.listarFilmes();
+                                System.out.println("Digite o título do dorama:");
+                                String tituloDorama = sc.nextLine();
+                                FilmeDorama dorama = doramaService.buscarFilme(tituloDorama);
+
+                                ProgressoDorama progresso = usuario.getProgressoDoramaList(dorama);
+                                if (progresso == null) {
+                                    System.out.println("⚠️ O usuário não tem progresso para este dorama.");
+                                    break;
+                                }
+
+                                System.out.println("Quantos minutos você assistiu agora?");
+                                int minutosAssistidos = Integer.parseInt(sc.nextLine());
+
+                                atualizarProgressoFilme(usuario, dorama, sc);
+                            }
+
+                            System.out.println("---------------------------------");
+                            break;
+
+                    }
+                    case 0:{
+                        System.out.println("=================================");
+                        System.out.println("Voltando ao menu principal...");
+                        System.out.println("=================================");
+                        break;
+                    }
+                    default:{
+                        System.out.println("---------------------------------");
+                        System.out.println("Opção inválida. Tente novamente.");
+                        System.out.println("---------------------------------");
+                        break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, digite um número válido.");
+                break;
+            }
+        }
+
+
+    }
+
+    public static void menuDoramasAdmin(UsuarioService usuarioService, Scanner sc, DoramaService doramaService) {
         int opcao = -1;
         while (opcao != 0) {
             System.out.println("=================================");
@@ -415,6 +592,7 @@ public class Main {
             System.out.println("1 - Menu Séries Doramas");
             System.out.println("2 - Menu Filmes Doramas");
             System.out.println("3 - Filtrar Doramas");
+            System.out.println("4 - Gerenciar Progresso dos Doramas");
             System.out.println("0 - Voltar");
             System.out.println("=================================");
             System.out.print("Escolha: ");
@@ -441,6 +619,12 @@ public class Main {
                         System.out.println("---------------------------------");
                         break;
                     }
+                    case 4:{
+                        System.out.println("---------------------------------");
+                        menuProgresso(usuarioService, doramaService, sc);
+                        System.out.println("---------------------------------");
+                        break;
+                    }
                     case 0:{
                         System.out.println("---------------------------------");
                         System.out.println("Voltando ao menu principal...");
@@ -451,10 +635,12 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Opção inválida. Tente novamente.");
                         System.out.println("---------------------------------");
+                        break;
                     }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
@@ -516,10 +702,12 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Opção inválida. Tente novamente.");
                         System.out.println("---------------------------------");
+                        break;
                     }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
@@ -581,10 +769,12 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Opção inválida. Tente novamente.");
                         System.out.println("---------------------------------");
+                        break;
                     }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
@@ -633,10 +823,12 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Opção inválida. Tente novamente.");
                         System.out.println("---------------------------------");
+                        break;
                     }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite um número válido.");
+                break;
             }
         }
     }
@@ -664,23 +856,29 @@ public class Main {
 
                     case 1: {
                         System.out.println("---------------------------------");
-                        System.out.println("Selecione o gênero:");
+
                         for (int i = 0; i < Generos.values().length; i++) {
-                            System.out.println(i + " - " + Generos.values()[i]);
+                            System.out.println(" - " + Generos.values()[i]);
                         }
+                        System.out.println("Selecione o gênero:");
                         String generoInput = sc.nextLine();
-                        doramaService.filtrarGenero(generoInput);
+                        Generos genero = Generos.valueOf(generoInput.toUpperCase());
+                        List<Dorama> doramas= doramaService.filtrarGenero(generoInput);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
                     case 2:{
                         System.out.println("---------------------------------");
-                        System.out.println("Selecione o status:");
+
                         for (int i = 0; i < StatusDorama.values().length; i++) {
-                            System.out.println(i + " - " + StatusDorama.values()[i]);
+                            System.out.println(" - " + StatusDorama.values()[i]);
                         }
+                        System.out.println("Selecione o status:");
                         String statusInput = sc.nextLine();
-                        doramaService.filtrarStatus(statusInput);
+                        List<Dorama> doramas = doramaService.filtrarStatus(statusInput);
+                        StatusDorama status = StatusDorama.valueOf(statusInput.toUpperCase());
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -692,7 +890,8 @@ public class Main {
                         System.out.println("Digite o ano final (AAAA): ");
                         String anoFinal = sc.nextLine();
                         LocalDate fim = LocalDate.parse(anoFinal);
-                        doramaService.filtrarPorIntervaloDeData(inicio, fim);
+                        List<Dorama> doramas= doramaService.filtrarPorIntervaloDeData(inicio, fim);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -701,7 +900,8 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Digite o nome da emissora: ");
                         String emissora = sc.nextLine();
-                        doramaService.filtrarEmissora(emissora);
+                        List<Dorama> doramas = doramaService.filtrarEmissora(emissora);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -709,7 +909,8 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Digite o país de origem: ");
                         String paisOrigem = sc.nextLine();
-                        doramaService.filtrarPais(paisOrigem);
+                        List<Dorama> doramas = doramaService.filtrarPais(paisOrigem);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -717,7 +918,8 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Digite a avaliação IMDB: ");
                         String avaliacaoIMDB = sc.nextLine();
-                        doramaService.filtrarIMDB(avaliacaoIMDB);
+                        List<Dorama> doramas = doramaService.filtrarIMDB(avaliacaoIMDB);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -725,7 +927,8 @@ public class Main {
                         System.out.println("---------------------------------");
                         System.out.println("Digite o nome do ator: ");
                         String nomeAtor = sc.nextLine();
-                        doramaService.filtrarAtores(nomeAtor);
+                        List<Dorama> doramas = doramaService.filtrarAtores(nomeAtor);
+                        doramaService.listarTodosDoramas(doramas);
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -744,5 +947,55 @@ public class Main {
             }
         }
     }
+
+    public static void verProgressoAtual(Usuario usuario, Dorama dorama) {
+        ProgressoDorama progresso = usuario.getProgressoDoramaList(dorama);
+
+        if (progresso != null) {
+            System.out.println(progresso.toString());
+        } else {
+            System.out.println("⚠️ O usuário não tem progresso para este dorama.");
+        }
+
+        System.out.println("---------------------------------");
+    }
+
+
+    public static void atualizarProgressoSerie(Usuario usuario, Dorama dorama, Scanner sc) {
+        ProgressoDorama progresso = usuario.getProgressoDoramaList(dorama);
+
+        if (progresso instanceof ProgressoSerie) {
+            ProgressoSerie progressoSerie = (ProgressoSerie) progresso;
+
+            System.out.println("Quantidade de episódios assistidos: " + progressoSerie.getEpisodiosAssistidos());
+            System.out.println("Quantos episódios você assistiu agora? ");
+            int novosEpisodios = Integer.parseInt(sc.nextLine());
+
+            progressoSerie.setEpisodiosAssistidos(progressoSerie.getEpisodiosAssistidos() + novosEpisodios);
+            System.out.println("✅ Progresso atualizado com sucesso!");
+        } else {
+            System.out.println("⚠️ O progresso informado não é de uma série.");
+        }
+    }
+
+
+    public static void atualizarProgressoFilme(Usuario usuario, Dorama dorama, Scanner sc) {
+        ProgressoDorama progresso = usuario.getProgressoDoramaList(dorama);
+
+        if (progresso instanceof ProgressoFilme) {
+            ProgressoFilme progressoFilme = (ProgressoFilme) progresso;
+
+            System.out.println("Minutos assistidos até agora: " + progressoFilme.getMinutosAssistidos());
+            System.out.println("Quantos minutos você assistiu agora?");
+            int novosMinutos = Integer.parseInt(sc.nextLine());
+
+            progressoFilme.adicionarMinutosAssistidos(novosMinutos);
+            System.out.println("✅ Progresso atualizado com sucesso!");
+        } else {
+            System.out.println("⚠️ O progresso informado não é de um filme.");
+        }
+    }
+
+
 
 }

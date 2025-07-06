@@ -15,6 +15,10 @@ public class DoramaService {
     private DiretorService diretorService;
     private AtorService atorService;
 
+    private List<Dorama> doramasFiltrados = new ArrayList<>();
+    private List<Dorama> todosDoramas = new ArrayList<>();
+
+
     private List<SerieDorama> seriesDoramas = new ArrayList<>();
     private List<FilmeDorama> filmeDoramas = new ArrayList<>();
 
@@ -68,10 +72,12 @@ public class DoramaService {
         String avaliacaoIMDB = sc.nextLine();
 
         System.out.println("Insira a quantidade de temporadas da série dorama: ");
-        String qtdTemporadas = sc.nextLine();
+        int qtdTemporadas = sc.nextInt();
+        sc.nextLine();
 
         System.out.println("Insira a quantidade de episódios da série dorama: ");
-        String qtdEpisodios = sc.nextLine();
+        int qtdEpisodios = sc.nextInt();
+        sc.nextLine();
 
         List<Ator> principaisAtores = new ArrayList<>();
         System.out.println("Deseja adicionar atores principais? (s/n)");
@@ -210,11 +216,11 @@ public class DoramaService {
                     break;
                 case 8:
                     System.out.println("Insira a nova quantidade de temporadas: ");
-                    serieDorama.setQtdTemporadas(sc.nextLine());
+                    serieDorama.setQtdTemporadas(sc.nextInt());
                     break;
                 case 9:
                     System.out.println("Insira a nova quantidade de episódios: ");
-                    serieDorama.setQtdEpisodios(sc.nextLine());
+                    serieDorama.setQtdEpisodios(sc.nextInt());
                     break;
             }
         }
@@ -239,7 +245,7 @@ public class DoramaService {
             System.out.println("Nenhuma série dorama cadastrada.");
         } else {
             for (SerieDorama serie : seriesDoramas) {
-                serie.listaDoramasFormatado();
+                serie.getTitulo();
             }
         }
     }
@@ -460,7 +466,7 @@ public class DoramaService {
             System.out.println("Nenhum filme dorama cadastrado.");
         } else {
             for (FilmeDorama filme : filmeDoramas) {
-                filme.listaDoramasFormatado();
+                filme.getTitulo();
             }
         }
     }
@@ -479,8 +485,7 @@ public class DoramaService {
     //FILTROS
 
     public List<Dorama> filtrarGenero(String genero){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -490,13 +495,11 @@ public class DoramaService {
                 }
             }
         }
-
         return doramasFiltrados;
     }
 
     public List<Dorama> filtrarStatus(String status){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -511,8 +514,7 @@ public class DoramaService {
     }
 
     public List<Dorama> filtrarEmissora(String emissora){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -543,8 +545,7 @@ public class DoramaService {
     }
 
     public List<Dorama> filtrarAtores(String nomeAtor){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -558,8 +559,7 @@ public class DoramaService {
     }
 
     public List<Dorama> filtrarPais(String paisOrigem){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -572,8 +572,7 @@ public class DoramaService {
     }
 
     public List<Dorama> filtrarIMDB(String nota){
-        List<Dorama> doramasFiltrados = new ArrayList<>();
-        List<Dorama> todosDoramas = new ArrayList<>();
+
         todosDoramas.addAll(filmeDoramas);
         todosDoramas.addAll(seriesDoramas);
         for (Dorama dorama : todosDoramas) {
@@ -583,6 +582,23 @@ public class DoramaService {
         }
 
         return doramasFiltrados;
+    }
+
+    public void listarTodosDoramas(List<Dorama> doramas) {
+        if (doramas.isEmpty()) {
+            System.out.println("Nenhum dorama cadastrado.");
+        } else {
+            for (Dorama dorama : doramas) {
+                if (dorama instanceof SerieDorama)
+                    ((SerieDorama) dorama).listaDoramasFormatado();
+                else if (dorama instanceof FilmeDorama)
+                    ((FilmeDorama) dorama).listaDoramasFormatado();
+                else
+                    System.out.println("Tipo de dorama desconhecido.");
+            }
+        }
+
+
     }
 
 }

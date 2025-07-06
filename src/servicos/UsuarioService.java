@@ -13,6 +13,17 @@ public class UsuarioService {
 
     Scanner sc = new Scanner(System.in);
 
+    public void getUsers() {
+        if (users.isEmpty()) {
+            System.out.println("Nenhum usuário cadastrado.");
+        } else {
+            System.out.println("Usuários cadastrados:");
+            for (Usuario user : users) {
+                user.getNome();
+            }
+        }
+    }
+
     public Usuario criarPessoa(){
         String email, senha;
         System.out.println("Informe o seu nome: ");
