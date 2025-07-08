@@ -862,9 +862,16 @@ public class Main {
                         }
                         System.out.println("Selecione o gênero:");
                         String generoInput = sc.nextLine();
-                        Generos genero = Generos.valueOf(generoInput.toUpperCase());
-                        List<Dorama> doramas= doramaService.filtrarGenero(generoInput);
-                        doramaService.listarTodosDoramas(doramas);
+
+                        Generos genero = null;
+                        try {
+                            genero = Generos.valueOf(generoInput.toUpperCase());
+                            List<Dorama> doramas= doramaService.filtrarGenero(generoInput);
+                            doramaService.listarTodosDoramas(doramas);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Gênero inválido! Tente novamente com um dos listados.");
+                        }
+
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -874,11 +881,20 @@ public class Main {
                         for (int i = 0; i < StatusDorama.values().length; i++) {
                             System.out.println(" - " + StatusDorama.values()[i]);
                         }
+
+                        StatusDorama status = null;
+
                         System.out.println("Selecione o status:");
                         String statusInput = sc.nextLine();
-                        List<Dorama> doramas = doramaService.filtrarStatus(statusInput);
-                        StatusDorama status = StatusDorama.valueOf(statusInput.toUpperCase());
-                        doramaService.listarTodosDoramas(doramas);
+
+                        try {
+                            status = StatusDorama.valueOf(statusInput.toUpperCase());
+                            List<Dorama> doramas= doramaService.filtrarGenero(statusInput);
+                            doramaService.listarTodosDoramas(doramas);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Gênero inválido! Tente novamente com um dos listados.");
+                        }
+
                         System.out.println("---------------------------------");
                         break;
                     }
@@ -954,7 +970,7 @@ public class Main {
         if (progresso != null) {
             System.out.println(progresso.toString());
         } else {
-            System.out.println("⚠️ O usuário não tem progresso para este dorama.");
+            System.out.println("O usuário não tem progresso para este dorama.");
         }
 
         System.out.println("---------------------------------");

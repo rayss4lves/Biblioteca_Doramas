@@ -59,6 +59,8 @@ public class Usuario extends Pessoa implements Autentica {
         return this.email.equals(email) && this.senha.equals(senha);
     }
 
+    //fazer com que o sistema nao quebre caso o email ou senha estejam errados
+
     public void setProgressoDoramaList(List<ProgressoDorama> progressosDorama) {
         this.progressosDorama = progressosDorama;
     }

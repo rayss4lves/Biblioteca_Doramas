@@ -39,14 +39,10 @@ public class DoramaService {
         System.out.println("Insira a sinopse da série dorama: ");
         String sinopse = sc.nextLine();
 
-        System.out.println("Insira o genero da série dorama: ");
-        String genero = sc.nextLine();
-
-        System.out.println("Escolha um gênero:");
         List<Generos> generos = new ArrayList<>();
 
         for (int i = 0; i < Generos.values().length; i++) {
-            System.out.println(" - " + Generos.values()[i]);
+            System.out.println(i + " - " + Generos.values()[i]);
         }
         String resposta;
         do {
@@ -65,8 +61,14 @@ public class DoramaService {
         System.out.println("Insira o pais de origem da série dorama: ");
         String paisOrigem = sc.nextLine();
 
-        System.out.println("Insira a data de publicação da série dorama (AAAA-MM-DD): ");
-        String dataPublicacaoStr = sc.nextLine();
+        System.out.println("Insira o dia do lancamento: ");
+        String dia = sc.nextLine();
+        System.out.println("Insira o mes do lancamento: ");
+        String mes = sc.nextLine();
+        System.out.println("Insira o ano do lancamento: ");
+        String ano = sc.nextLine();
+        String dataLanc = ano + "-" + mes + "-" + dia;
+        LocalDate dataLanca = LocalDate.parse(dataLanc);
 
         System.out.println("Insira a avaliação IMDB da série dorama: ");
         String avaliacaoIMDB = sc.nextLine();
@@ -80,19 +82,22 @@ public class DoramaService {
         sc.nextLine();
 
         List<Ator> principaisAtores = new ArrayList<>();
-        System.out.println("Deseja adicionar atores principais? (s/n)");
-        String respostaAtores = sc.nextLine();
+        String respostaAtores;
+        String nomeAtor = "[ ]";
 
+        System.out.println("Deseja adicionar um ator principal? (s/n)");
+        respostaAtores = sc.nextLine().toLowerCase();
         while (respostaAtores.equals("s")) {
+
             System.out.println("Insira o nome do ator: ");
-            String nomeAtor = sc.nextLine();
+            nomeAtor = sc.nextLine();
             Ator ator = atorService.buscarAtor(nomeAtor);
             if (ator == null)
                 ator = atorService.criarAtor();
             principaisAtores.add(ator);
 
             System.out.println("Deseja adicionar outro ator principal? (s/n)");
-            respostaAtores = sc.nextLine();
+            respostaAtores = sc.nextLine().toLowerCase();
         }
 
         System.out.println("Insira o nome do diretor: ");
@@ -127,7 +132,7 @@ public class DoramaService {
 
 
         SerieDorama serieDorama = new SerieDorama(titulo, sinopse, generos, emissora, paisOrigem,
-                LocalDate.parse(dataPublicacaoStr), avaliacaoIMDB, principaisAtores, diretor, status,
+                dataLanca, avaliacaoIMDB, principaisAtores, diretor, status,
                 qtdTemporadas, qtdEpisodios);
         seriesDoramas.add(serieDorama);
         return serieDorama;
@@ -245,7 +250,7 @@ public class DoramaService {
             System.out.println("Nenhuma série dorama cadastrada.");
         } else {
             for (SerieDorama serie : seriesDoramas) {
-                serie.getTitulo();
+                System.out.println(serie.getTitulo());
             }
         }
     }
@@ -272,7 +277,6 @@ public class DoramaService {
         System.out.println("Insira o genero do filme dorama: ");
         String genero = sc.nextLine();
 
-        System.out.println("Escolha um gênero:");
         List<Generos> generos = new ArrayList<>();
 
         for (int i = 0; i < Generos.values().length; i++) {
@@ -295,8 +299,14 @@ public class DoramaService {
         System.out.println("Insira o pais de origem do filme dorama: ");
         String paisOrigem = sc.nextLine();
 
-        System.out.println("Insira a data de publicação do filme dorama (AAAA-MM-DD): ");
-        String dataPublicacaoStr = sc.nextLine();
+        System.out.println("Insira o dia do lancamento: ");
+        String dia = sc.nextLine();
+        System.out.println("Insira o mes do lancamento: ");
+        String mes = sc.nextLine();
+        System.out.println("Insira o ano do lancamento: ");
+        String ano = sc.nextLine();
+        String dataLanc = ano + "-" + mes + "-" + dia;
+        LocalDate dataLanca = LocalDate.parse(dataLanc);
 
         System.out.println("Insira a avaliação IMDB do filme dorama: ");
         String avaliacaoIMDB = sc.nextLine();
@@ -354,7 +364,7 @@ public class DoramaService {
 
 
         FilmeDorama filmeDorama = new FilmeDorama(titulo, sinopse, generos, emissora, paisOrigem,
-                LocalDate.parse(dataPublicacaoStr), avaliacaoIMDB, principaisAtores, diretor, status, duracao);
+                dataLanca, avaliacaoIMDB, principaisAtores, diretor, status, duracao);
         filmeDoramas.add(filmeDorama);
         return filmeDorama;
     }
@@ -466,7 +476,7 @@ public class DoramaService {
             System.out.println("Nenhum filme dorama cadastrado.");
         } else {
             for (FilmeDorama filme : filmeDoramas) {
-                filme.getTitulo();
+                System.out.println(filme.getTitulo());
             }
         }
     }
@@ -480,7 +490,6 @@ public class DoramaService {
         System.out.println("Série dorama não encontrada.");
         return null;
     }
-
 
     //FILTROS
 

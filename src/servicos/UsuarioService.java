@@ -28,12 +28,21 @@ public class UsuarioService {
         String email, senha;
         System.out.println("Informe o seu nome: ");
         String nome= sc.nextLine();
+        while (buscarNome(nome, users) == 1) {
+            System.out.println("Nome já cadastrado. Por favor, insira um nome diferente: ");
+            nome = sc.nextLine();
+        }
 
         System.out.println("Insira a sua nascionalidade: ");
         String nascionalidade = sc.nextLine();
 
-        System.out.println("Insira a data do seu nascimento: ");
-        String dataNascStr = sc.nextLine();
+        System.out.println("Insira o dia do seu nascimento: ");
+        String dia = sc.nextLine();
+        System.out.println("Insira o mes do seu nascimento: ");
+        String mes = sc.nextLine();
+        System.out.println("Insira o ano do seu nascimento: ");
+        String ano = sc.nextLine();
+        String dataNascStr = ano + "-" + mes + "-" + dia;
         LocalDate dataNasc = LocalDate.parse(dataNascStr);
 
         System.out.println("Informe se voce e admin ou visitante: ");
@@ -48,8 +57,18 @@ public class UsuarioService {
         }
 
         if (tipo == TipoUsuario.ADMIN){
+            String emailExemplo = "@gmail.com";
             System.out.println("Informe o seu email: ");
             email = sc.nextLine();
+            while (!email.endsWith(emailExemplo)){
+                System.out.println("Email deve conter '@gmail.com'");
+                email = sc.nextLine();
+            }
+            while (buscarEmail(email, users) == 1) {
+                System.out.println("Email já cadastrado. Por favor, insira um email diferente: ");
+                email = sc.nextLine();
+            }
+
 
             System.out.println("Informe a sua senha: ");
             senha = sc.nextLine();
@@ -61,6 +80,26 @@ public class UsuarioService {
         Usuario user = new Usuario(nome, nascionalidade, dataNasc, email, senha, tipo);
         users.add(user);
         return user;
+    }
+
+    public static int buscarNome(String nome, List<Usuario> users) {
+        int encontrou = 0;
+        for (Usuario user : users) {
+            if (user.getNome().equalsIgnoreCase(nome)) {
+                encontrou = 1; // Nome encontrado
+            }
+        }
+        return encontrou; // Nome não encontrado
+    }
+
+    public int buscarEmail(String email, List<Usuario> users) {
+        int encontrou = 0;
+        for (Usuario user : users) {
+            if (user.getEmail() != null && user.getEmail().equalsIgnoreCase(email)) {
+                encontrou = 1; // Email encontrado
+            }
+        }
+        return encontrou; // Email não encontrado
     }
 
     public int excluirUser(){

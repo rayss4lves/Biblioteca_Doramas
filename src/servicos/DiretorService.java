@@ -20,8 +20,13 @@ public class DiretorService {
         System.out.println("Insira a sua nascionalidade: ");
         String nascionalidade = sc.nextLine();
 
-        System.out.println("Insira a data do seu nascimento: ");
-        String dataNascStr = sc.nextLine();
+        System.out.println("Insira o dia do seu nascimento: ");
+        String dia = sc.nextLine();
+        System.out.println("Insira o mes do seu nascimento: ");
+        String mes = sc.nextLine();
+        System.out.println("Insira o ano do seu nascimento: ");
+        String ano = sc.nextLine();
+        String dataNascStr = ano + "-" + mes + "-" + dia;
         LocalDate dataNasc = LocalDate.parse(dataNascStr);
 
         int i = 1;

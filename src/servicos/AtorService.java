@@ -20,8 +20,13 @@ public class AtorService {
         System.out.println("Insira a nacionalidade: ");
         String nacionalidade = sc.nextLine();
 
-        System.out.println("Insira a data de nascimento (AAAA-MM-DD): ");
-        String dataNascStr = sc.nextLine();
+        System.out.println("Insira o dia do seu nascimento: ");
+        String dia = sc.nextLine();
+        System.out.println("Insira o mes do seu nascimento: ");
+        String mes = sc.nextLine();
+        System.out.println("Insira o ano do seu nascimento: ");
+        String ano = sc.nextLine();
+        String dataNascStr = ano + "-" + mes + "-" + dia;
         LocalDate dataNasc = LocalDate.parse(dataNascStr);
 
         System.out.println("Informe a quantidade de prêmios: ");
